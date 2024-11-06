@@ -1,69 +1,12 @@
 # MagicMacros
-Godot Addon for enhanced autocomplete and code snippets
-
-# What does this do?
-This addon integrates with the Script Editor in Godot. It will scan the currently edited line for a pattern that fits one of the loaded macros, and when it finds a match highlight the line in green. Pressing tab will execute the macro on the contents of the line.
-
-Example:
-
-```GDScript
-setget
-
-becomes
-
-var NONAME: Variant = NONE:
-    set(value):
-        NONAME = value
-    get:
-        return NONAME
+This is a copy of TheDuriel's original MagicMacros repository and I do not own any credit for this repository. Which you can find here https://github.com/TheDuriel/MagicMacros.
+The main description can be found there. I made some changes which Duriel didn't find useful but I still wanted to share them. His repo's main approach is to distinguish between indentifier, values and type depending on pascal casing or snake casing. However, I don't follow a particular case for defining my variables name or class_name so it was causing conflict with my workflow and this is only for me and may not the case for you. As such it could completely distrupt the output of macro depending on what argument I feed it and in it if I put any character to capital for example "SignalCaller", this might be registered in remainters. As such I applied a different approach which in exchange the ability to separate types, from identifiers and remainders. Instead I now use 
 ```
-
-```GDScript
-setget myvar mytype myvalue
-
-becomes
-
-var myvar: mytype = myvalue:
-    set(value):
-        myvar = value
-    get:
-        return myvar
+ line_data.get_arg(index, default)
 ```
-
-# How do I make new macros?
-
-Define macros in MagicMacros/Macros. New macros must extend MagicMacrosMacro type. Disable and reenable the plugin afterwards. You may have to do this twice for the new macros to load.
-
-Made a macro? Consider contributing it!
-
-# Installation
-
-This repository is designed to be loaded as a GIT Submodule. How you add these depends on your client of choice.
-
-[Refer to this if you're mad enough to use the command line :P](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
-
-Alternatively, download the zip from this page and unpack it into your addons folder under res://addons/MagicMacros
-
-# Current Macros
-
-* setget = creates a variable with specified name, type, value, if any, and setters and getters.
-* init = creates the _init function.
-* ready | rdy = creates the _ready function.
-* fn | fnc = creates a function with specified name and return type if any.
-* node = creates an @onready variable with specified name, type, value if any.
-
----
-
-### Looking for more?
-
-Check out Nylon! https://theduriel.itch.io/nylon
-
-Nylon for Godot is a Deep Dialogue sequencing addon, perfect for making complex RPG dialogue, cutscenes, and more. It's easily modified and used over the network as well, and includes a template project that incldues **many many more** utility systems for quickly building up your own game. Including menu and game state management, option menus, save files, audio, and more.
-
-### Support me!
-
-I don't have a donation link. But instead of giving something for nothing, you can buy Nylon above! And get something in the process! :D
-
-### Need support?
-
-This repository is provided as is. However I will happily answer questions via twitter: https://twitter.com/the_duriel
+here index represents the index of arguement provided with macro after excluding the macro name and the other argument is the value to be returned in case no input is provided.
+an example could be
+```
+var one int 0
+```
+in here one is indexed 0, int as 1 and 0 integer as index. Now the macro unfolding completely depends the order of your inputs and it can not separate these argumenets automatically. So your input is an important factor unlike how his plugin handles it. It can be considered a downgrade but it can also be considered an upgrade if you like more control. The example of how to build are given under the macros's folder you just need to duplicate one of the inbuilt files and define your macro in there the macro name can be defined in the ALIASES and you only need to edit apply_macro function to define your macro. To check simple examples you can check init or ready macro, for intermediate example you can check out funcion macro and for complex example you can check out vars.
